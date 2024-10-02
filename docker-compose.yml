@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   nginx:
     build: .
@@ -41,9 +40,15 @@ services:
       - POSTGRE_HOST=db
       - LABEL_STUDIO_HOST=${LABEL_STUDIO_HOST:-}
       - JSON_LOG=1
+      - LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK=${LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK}
+      - LABEL_STUDIO_USERNAME=${LABEL_STUDIO_USERNAME}
+      - LABEL_STUDIO_PASSWORD=${LABEL_STUDIO_PASSWORD}
+      - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=${LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED}
+      - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=${LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT}
     #      - LOG_LEVEL=DEBUG
     volumes:
       - ./mydata:/label-studio/data:rw
+      - /home/aamaldeveloper:/label-studio/local_files
     command: label-studio-uwsgi
 
   db:
@@ -62,3 +67,4 @@ services:
     volumes:
       - ${POSTGRES_DATA_DIR:-./postgres-data}:/var/lib/postgresql/data
       - ./deploy/pgsql/certs:/var/lib/postgresql/certs:ro
+
